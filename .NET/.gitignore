@@ -1,0 +1,58 @@
+## Build results
+bin/
+obj/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Visual Studio / VS Code
+.vs/
+.vscode/
+*.code-workspace
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## .NET / NuGet
+*.nupkg
+.nuget/
+
+# Local tools
+.dotnet/
+!**/.dotnet/tools/
+
+## Logs
+*.log
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## SQLite database (IMPORTANT for your project)
+*.db
+*.db-shm
+*.db-wal
+
+## EF Core Migrations (optional — include if you want version control)
+# If you WANT migrations tracked, REMOVE these lines
+# Migrations/
+# (keep migrations if working in a team)
+
+## Publish output
+publish/
+wwwroot/lib/
+
+## Secrets
+appsettings.*.json
+!appsettings.json
+
+## Environment files
+.env
+
+## Temporary files
+*.tmp
+*.swp

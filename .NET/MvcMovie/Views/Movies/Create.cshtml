@@ -1,0 +1,38 @@
+@model MvcMovie.Models.Movie
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create Movie</h1>
+
+<form asp-action="Create">
+    
+    <div>
+        <label asp-for="Title"></label>
+        <input asp-for="Title" />
+    </div>
+
+    <div>
+        <label asp-for="ReleaseDate"></label>
+        <input asp-for="ReleaseDate" type="date" />
+    </div>
+
+    <div>
+        <label asp-for="Genre"></label>
+        <input asp-for="Genre" />
+    </div>
+
+    <div>
+        <label asp-for="Price"></label>
+        <input asp-for="Price" type="number" step="0.01" />
+    </div>
+    <div>
+        <label asp-for="Rating"></label>
+        <input asp-for="Rating" />
+    </div>
+
+    <button type="submit">Create</button>
+</form>
+
+<a asp-action="Index">Back to List</a>
