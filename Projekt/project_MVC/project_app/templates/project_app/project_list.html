@@ -1,0 +1,30 @@
+{% extends 'project_app/base.html' %}
+
+{% block content %}
+<h2>Projects</h2>
+
+{% if user.is_authenticated %}
+    <p><a href="{% url 'project_create' %}" class="btn">Add project</a></p>
+{% endif %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Tasks</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in projects %}
+            <tr>
+                <td><a href="{% url 'project_detail' project.pk %}">{{ project.name }}</a></td>
+                <td>{{ project.description|truncatechars:80 }}</td>
+                <td>{{ project.tasks.count }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3">No projects yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

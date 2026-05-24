@@ -1,0 +1,36 @@
+{% extends 'project_app/base.html' %}
+
+{% block content %}
+<h2>Teams</h2>
+
+<p><a href="{% url 'team_create' %}" class="btn">Create team</a></p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Members</th>
+            <th>Your role</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for team in teams %}
+        <tr>
+            <td><a href="{{ team.get_absolute_url }}">{{ team.name }}</a></td>
+            <td>{{ team.description|truncatechars:80 }}</td>
+            <td>{{ team.members.count }}</td>
+            <td>
+                {% with membership=team.membership_for|default:None %}
+                    {% for m in team.memberships.all %}
+                        {% if m.user_id == user.id %}{{ m.get_role_display }}{% endif %}
+                    {% endfor %}
+                {% endwith %}
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="4">You don't belong to any team yet.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

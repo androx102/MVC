@@ -1,0 +1,12 @@
+{% extends 'project_app/base.html' %}
+
+{% block content %}
+<h2>{% if mode == 'create' %}New project{% else %}Edit project{% endif %}</h2>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Save</button>
+    <a href="{% url 'project_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

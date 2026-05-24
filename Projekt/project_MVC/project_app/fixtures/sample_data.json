@@ -1,0 +1,116 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "alice",
+      "password": "",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2024-01-01T00:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "username": "bob",
+      "password": "",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2024-01-01T00:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "project_app.project",
+    "pk": 1,
+    "fields": {
+      "name": "Backend API",
+      "description": "REST API development tasks"
+    }
+  },
+  {
+    "model": "project_app.project",
+    "pk": 2,
+    "fields": {
+      "name": "Frontend UI",
+      "description": "User interface implementation tasks"
+    }
+  },
+  {
+    "model": "project_app.task",
+    "pk": 1,
+    "fields": {
+      "description": "Set up database schema and migrations",
+      "assigned_to": 2,
+      "status": "done",
+      "project": 1,
+      "created_at": "2024-01-02T10:00:00Z"
+    }
+  },
+  {
+    "model": "project_app.task",
+    "pk": 2,
+    "fields": {
+      "description": "Implement authentication endpoints",
+      "assigned_to": 2,
+      "status": "in_progress",
+      "project": 1,
+      "created_at": "2024-01-03T10:00:00Z"
+    }
+  },
+  {
+    "model": "project_app.task",
+    "pk": 3,
+    "fields": {
+      "description": "Design navigation layout",
+      "assigned_to": 3,
+      "status": "todo",
+      "project": 2,
+      "created_at": "2024-01-04T10:00:00Z"
+    }
+  },
+  {
+    "model": "project_app.task",
+    "pk": 4,
+    "fields": {
+      "description": "Build task list component",
+      "assigned_to": 3,
+      "status": "todo",
+      "project": 2,
+      "created_at": "2024-01-05T10:00:00Z"
+    }
+  },
+  {
+    "model": "project_app.comment",
+    "pk": 1,
+    "fields": {
+      "task": 1,
+      "author": 2,
+      "body": "Migration scripts reviewed and applied successfully.",
+      "created_at": "2024-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "project_app.comment",
+    "pk": 2,
+    "fields": {
+      "task": 2,
+      "author": 3,
+      "body": "JWT approach looks good, waiting for review.",
+      "created_at": "2024-01-03T14:00:00Z"
+    }
+  }
+]

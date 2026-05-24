@@ -1,0 +1,38 @@
+{% extends 'project_app/base.html' %}
+
+{% block content %}
+<h2>Tasks - Board</h2>
+
+{% include 'project_app/_task_toolbar.html' %}
+
+{% if user.is_authenticated %}
+    <p><a href="{% url 'task_create' %}" class="btn">Add task</a></p>
+{% endif %}
+
+<div class="kanban">
+    {% for column in columns %}
+        <section class="kanban__col">
+            <header class="kanban__col-head">
+                <span class="tag tag--{{ column.key }}">{{ column.label }}</span>
+                <span class="kanban__count">{{ column.tasks|length }}</span>
+            </header>
+            <div class="kanban__col-body">
+                {% for task in column.tasks %}
+                    <article class="kanban__card">
+                        <a href="{% url 'task_detail' task.pk %}?return={{ request.get_full_path|urlencode }}" class="kanban__card-desc">{{ task.description }}</a>
+                        <div class="kanban__card-meta">
+                            <span>{% if task.assigned_to %}{{ task.assigned_to.username }}{% else %}Unassigned{% endif %}</span>
+                            <span class="muted">{{ task.project.name }}</span>
+                        </div>
+                        {% if task.deadline %}
+                            <span class="tag tag--deadline{% if task.is_overdue %} tag--overdue{% endif %}">{{ task.deadline|date:"Y-m-d" }}</span>
+                        {% endif %}
+                    </article>
+                {% empty %}
+                    <p class="kanban__empty">No tasks</p>
+                {% endfor %}
+            </div>
+        </section>
+    {% endfor %}
+</div>
+{% endblock %}
