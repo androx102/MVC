@@ -1,0 +1,37 @@
+{% extends 'project_app/base.html' %}
+
+{% block content %}
+<h2>{{ project.name }}</h2>
+<p>{% if project.description %}{{ project.description }}{% else %}No description.{% endif %}</p>
+
+<h3>Tasks</h3>
+<div class="table-wrap">
+<table>
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Assigned to</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in project.tasks.all %}
+            <tr>
+                <td><a href="{% url 'task_detail' task.pk %}">{{ task.description }}</a></td>
+                <td><span class="tag tag--{{ task.status }}">{{ task.get_status_display }}</span></td>
+                <td>{% if task.assigned_to %}{{ task.assigned_to.username }}{% else %}Unassigned{% endif %}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3">No tasks yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% if user.is_authenticated %}
+    <p>
+        <a href="{% url 'project_update' project.pk %}" class="btn">Edit project</a>
+        <a href="{% url 'project_list' %}" class="btn btn-secondary">Back to projects</a>
+    </p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,36 @@
+<div class="view-switch" role="tablist" aria-label="Task view">
+    <a href="{% url 'task_list' %}?{{ request.GET.urlencode }}"
+       class="{% if current_view == 'list' %}is-active{% endif %}"
+       role="tab"
+       aria-selected="{% if current_view == 'list' %}true{% else %}false{% endif %}">List</a>
+    <a href="{% url 'task_board' %}?{{ request.GET.urlencode }}"
+       class="{% if current_view == 'board' %}is-active{% endif %}"
+       role="tab"
+       aria-selected="{% if current_view == 'board' %}true{% else %}false{% endif %}">Board</a>
+</div>
+
+<form method="get" class="filter-bar">
+    <input name="q" value="{{ query }}" placeholder="Search description">
+    <select name="status" aria-label="Status">
+        <option value="">All statuses</option>
+        {% for value, label in status_choices %}
+            <option value="{{ value }}" {% if value == status %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="project" aria-label="Project">
+        <option value="">All projects</option>
+        {% for p in projects %}
+            <option value="{{ p.pk }}" {% if project_id == p.pk %}selected{% endif %}>{{ p.name }}</option>
+        {% endfor %}
+    </select>
+    <select name="assignee" aria-label="Assignee">
+        <option value="">All assignees</option>
+        <option value="me" {% if assignee_raw == 'me' %}selected{% endif %}>Assigned to me</option>
+        <option value="unassigned" {% if assignee_raw == 'unassigned' %}selected{% endif %}>Unassigned</option>
+        {% for u in assignees %}
+            <option value="{{ u.pk }}" {% if assignee_id == u.pk %}selected{% endif %}>{{ u.username }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn">Search</button>
+    <a href="{% if current_view == 'board' %}{% url 'task_board' %}{% else %}{% url 'task_list' %}{% endif %}" class="btn btn-secondary">Clear</a>
+</form>

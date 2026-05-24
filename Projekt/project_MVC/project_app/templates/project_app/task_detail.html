@@ -1,0 +1,64 @@
+{% extends 'project_app/base.html' %}
+
+{% block content %}
+<nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ back_url }}">Tasks</a>
+    <span class="breadcrumb__sep">/</span>
+    <span class="breadcrumb__current">{{ task.description|truncatechars:60 }}</span>
+</nav>
+
+<h2>{{ task.description }}</h2>
+
+{% if task.details %}
+    <section class="task-details">
+        <p>{{ task.details|linebreaksbr }}</p>
+    </section>
+{% endif %}
+
+<div class="table-wrap">
+<table>
+    <tr><th>Project</th><td><a href="{% url 'project_detail' task.project.pk %}">{{ task.project.name }}</a></td></tr>
+    <tr><th>Assigned to</th><td>{% if task.assigned_to %}{{ task.assigned_to.username }}{% else %}Unassigned{% endif %}</td></tr>
+    <tr><th>Status</th><td><span class="tag tag--{{ task.status }}">{{ task.get_status_display }}</span></td></tr>
+    <tr><th>Deadline</th><td>
+        {% if task.deadline %}
+            <span class="tag tag--deadline{% if task.is_overdue %} tag--overdue{% endif %}">{{ task.deadline|date:"Y-m-d" }}</span>
+        {% else %}
+            <span class="muted">No deadline</span>
+        {% endif %}
+    </td></tr>
+    <tr><th>Created</th><td>{{ task.created_at|date:"Y-m-d H:i" }}</td></tr>
+</table>
+</div>
+
+{% if user.is_authenticated %}
+    <p>
+        <a href="{% url 'task_update' task.pk %}" class="btn">Edit</a>
+        <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger">Delete</a>
+        <a href="{{ back_url }}" class="btn btn-secondary">Back to list</a>
+    </p>
+{% endif %}
+
+<h3>Comments</h3>
+<ul class="comments">
+    {% for comment in task.comments.all %}
+        <li>
+            <strong>{{ comment.author.username }}</strong>
+            <span class="comment-date">{{ comment.created_at|date:"Y-m-d H:i" }}</span>
+            <p>{{ comment.body }}</p>
+        </li>
+    {% empty %}
+        <li>No comments yet.</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit" class="btn">Add comment</button>
+    </form>
+{% else %}
+    <p>Login to comment.</p>
+{% endif %}
+{% endblock %}

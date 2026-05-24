@@ -1,0 +1,46 @@
+{% extends 'project_app/base.html' %}
+
+{% block content %}
+<h2>Tasks</h2>
+
+{% include 'project_app/_task_toolbar.html' %}
+
+{% if user.is_authenticated %}
+    <p><a href="{% url 'task_create' %}" class="btn">Add task</a></p>
+{% endif %}
+
+<div class="table-wrap">
+<table>
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Project</th>
+            <th>Assigned to</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td><a href="{% url 'task_detail' task.pk %}?return={{ request.get_full_path|urlencode }}">{{ task.description }}</a></td>
+                <td>{{ task.project.name }}</td>
+                <td>{% if task.assigned_to %}{{ task.assigned_to.username }}{% else %}Unassigned{% endif %}</td>
+                <td><span class="tag tag--{{ task.status }}">{{ task.get_status_display }}</span></td>
+                <td>
+                    {% if task.deadline %}
+                        <span class="tag tag--deadline{% if task.is_overdue %} tag--overdue{% endif %}">{{ task.deadline|date:"Y-m-d" }}</span>
+                    {% else %}
+                        <span class="muted">-</span>
+                    {% endif %}
+                </td>
+                <td>{{ task.created_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6">No tasks found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

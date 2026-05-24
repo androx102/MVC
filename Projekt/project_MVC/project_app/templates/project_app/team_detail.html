@@ -1,0 +1,59 @@
+{% extends 'project_app/base.html' %}
+
+{% block content %}
+<h2>{{ team.name }}</h2>
+{% if team.description %}<p>{{ team.description }}</p>{% endif %}
+
+{% if is_manager %}
+    <p>
+        <a href="{% url 'team_update' team.pk %}" class="btn">Edit team</a>
+    </p>
+{% endif %}
+
+<h3>Members</h3>
+<table>
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Joined</th>
+            {% if is_manager %}<th>Actions</th>{% endif %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for membership in team.memberships.all %}
+        <tr>
+            <td>{{ membership.user.username }}</td>
+            <td><span class="tag tag--{{ membership.role }}">{{ membership.get_role_display }}</span></td>
+            <td>{{ membership.joined_at|date:"Y-m-d" }}</td>
+            {% if is_manager %}
+            <td>
+                <form method="post" action="{% url 'team_member_role' team.pk membership.pk %}" class="inline-form">
+                    {% csrf_token %}
+                    <select name="role">
+                        {% for value, label in roles %}
+                            <option value="{{ value }}" {% if value == membership.role %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn">Save role</button>
+                </form>
+                <form method="post" action="{% url 'team_member_remove' team.pk membership.pk %}" class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% if is_manager %}
+<h3>Add member</h3>
+<form method="post" action="{% url 'team_member_add' team.pk %}" novalidate>
+    {% csrf_token %}
+    {{ add_form.as_p }}
+    <button type="submit" class="btn">Add member</button>
+</form>
+{% endif %}
+{% endblock %}
